@@ -13,8 +13,9 @@ Two systems are compared via a (pseudo)metric, called the *evolution metric*. Th
   * compare the behaviour of one program with respect to different environments and changes in the initial %environmental 
 conditions.
 
-Via the metric we introduce some dependability properties of a program, called *adaptability* and *reliability*.
+Via the metric we introduce some dependability properties of a program, called *robustness*, *adaptability*, and *reliability*.
 
+Robustness is the ability of the program to tolerate changes in the environmental conditions while preserving the original behaviour.
 Adaptability denotes the ability of the program to lead the system back to its desired behaviour, within a given time horizon, when some perturbation is applied to the initial data space. Reliability is the untimed version of adaptability.
 
 In [temperature.py](./temperature.py) we show how SPEAR can be used to model a simple heating system in which the thermostat, the program, has to keep the temperature of the room within a desired comfort interval. We use our algorithm to evaluate the differences between two heating systems having the same program but starting from different initial conditions. Finally, we apply it to study the adaptability and reliability of the considered program
@@ -22,6 +23,10 @@ In [temperature.py](./temperature.py) we show how SPEAR can be used to model a s
 In [smart_room.py](./smart_room.py) SPEAR is used to study adaptation of a domotic scenario where two parameters, temperature and air quality, are considered. 
 
 In [redblue.py](./readblue.py) we use SPEAR to study adaptation of a Collective Adaptive Sysems by using mean-field approximation. 
+
+In [LMCS_example_tanks.py](./LMCS_example_tanks.py) we show how SPEAR can be used to model a stochastic variant of the 3-tanks laboratory experiment.
+Briefly, there are three identical tanks connected by two pipes. Water enters in the first and in the last tank by means of a pump and an incoming pipe, respectively. The last tank is equipped with an outlet pump. We assume that water flows through the incoming pipe with a rate that is determined by the environment, whereas the flow rates through the two pumps are under the control of the program controlling the experiment. The task of the program consists in guaranteeing that the levels of water in the three tanks fulfil some given requirements.
+We use our algorithms to evaluate the differences between various instances of this system, and to measure its robustness and its adaptability.
 
 ## Download 
 
