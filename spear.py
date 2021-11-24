@@ -92,6 +92,31 @@ def parallel_combine(proc1, next1, p, proc2, next2):
     return scale(parallel_right(next1, p, proc2), p)+scale(parallel_left(next2, p, proc1), 1-p)
 
 
+def synch_parallel_process(proc1, proc2):
+    """
+    Return the step function of process proc1||proc2.
+
+    :param proc1: a process
+    :param proc2: a process
+    :return: synchronous parallel composition of proc1 and proc2
+    """
+    return lambda pdef, d: synch_parallel_combine(proc1, proc1(pdef, d), proc2, proc2(pdef, d))
+
+
+def synch_parallel_combine(proc1, next1, proc2, next2):
+    """
+    Compute synchronous semantics of proc1 and proc2
+
+    :param proc1: a process
+    :param next1: step function of proc1
+    :param proc2: a process
+    :param next2: step function of proc2
+    :return: step function
+    
+    """
+    return [((sub1 | sub2 , synch_parallel_process(proc1,proc2)), prob1 * prob2) for ((sub1, proc1), prob1) in next1 for ((sub2, proc2), prob2) in next2 ]
+
+
 def apply_from_data(act_fun, d):
     """
     Computes the effect (substitution) of an action.
@@ -243,6 +268,20 @@ def plot_histogram(data, indexes, f, start, end, blocks, label, file):
         plt.title(label+" (step="+str(i)+")")
         plt.savefig(file+"_"+str(i)+".png")
         plt.show()
+        
+
+ def plot_histogram_double(data1, data2, indexes, f, start, end, blocks, title, file):
+    for i in indexes:
+        lst1 = list(map(f, data1[i]))
+        lst2 = list(map(f, data2[i]))
+        x1,y1 = count(lst1,start,end,blocks)
+        x2,y2 = count(lst2,start,end,blocks)
+        plt.plot(x1,y1,label='Scen1')
+        plt.plot(x2,y2,label='Scen2')
+        legend=plt.legend()
+        plt.title(title+" step="+str(i)+".")
+        plt.savefig(file+"_"+str(i)+".png")
+        plt.show()
 
 
 def wasserstein(lst1,lst2,n,l):
@@ -263,7 +302,7 @@ def distance(pdef1,p1,d1,env1,pdef2,p2,d2,env2,k,n,l,rho):
         lst1 = list(map(lambda d: rho(i,d),data1[i]))
         lst2 = list(map(lambda d: rho(i,d),data2[i]))
         dist[i] = wasserstein(lst1,lst2,n,l)
-    return [max(dist[i:]) for i in range(k)]
+    return [max(dist[i:]) for i in range(k)], dist
 
 
 def compute_distance(data1,data2,k,n,l,rho):
@@ -272,22 +311,22 @@ def compute_distance(data1,data2,k,n,l,rho):
         lst1 = list(map(lambda d: rho(i,d),data1[i]))
         lst2 = list(map(lambda d: rho(i,d),data2[i]))
         dist[i] = wasserstein(lst1,lst2,n,l)
-    return [max(dist[i:]) for i in range(k)]
+    return [max(dist[i:]) for i in range(k)], dist
 
 
 def distance_set(pdef1,p1,d1,env1,dlist,k,n,l,rho):
     delta = [ 0 for i in range(k) ]
     for d2 in dlist:
-        dist = distance(pdef1,p1,d1,env1,pdef1,p1,d2,env1,k,n,l,rho)
+        (M,dist) = distance(pdef1,p1,d1,env1,pdef1,p1,d2,env1,k,n,l,rho)
         for i in range(k):
-            delta[i] = max(delta[i],dist[i])
+            delta[i] = max(delta[i],M[i])
     return delta
 
 
 def compute_distance_set(data1,dlist,k,n,l,rho):
     delta = [ 0 for i in range(k) ]
     for data2 in dlist:
-        dist = compute_distance(data1,data2,k,n,l,rho)
+        (M,dist) = compute_distance(data1,data2,k,n,l,rho)
         for i in range(k):
-            delta[i] = max(delta[i],dist[i])
+            delta[i] = max(delta[i],M[i])
     return delta
