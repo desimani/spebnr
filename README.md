@@ -41,7 +41,7 @@ Run this command in the folder where you want to download the tool.
 
 ## How to run experiments
 
-To run experiments Python3 is needed. Moreover, the following Python packages must be available:
+To run experiments Python3 (>= 3.9) is needed. Moreover, the following Python packages must be available:
   * [numpy](https://numpy.org) >= 1.18.4
   * [scipy](https://www.scipy.org) >= 1.4.1
   * [matplotlib](https://matplotlib.org) >= 3.0.3
