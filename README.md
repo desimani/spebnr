@@ -27,6 +27,7 @@ In [redblue.py](./readblue.py) we use SPEAR to study adaptation of a Collective 
 In [LMCS_example_tanks.py](./LMCS_example_tanks.py) we show how SPEAR can be used to model a stochastic variant of the 3-tanks laboratory experiment.
 Briefly, there are three identical tanks connected by two pipes. Water enters in the first and in the last tank by means of a pump and an incoming pipe, respectively. The last tank is equipped with an outlet pump. We assume that water flows through the incoming pipe with a rate that is determined by the environment, whereas the flow rates through the two pumps are under the control of the program controlling the experiment. The task of the program consists in guaranteeing that the levels of water in the three tanks fulfil some given requirements.
 We use our algorithms to evaluate the differences between various instances of this system, and to measure its robustness and its adaptability.
+Related to this, in [LMCS_statistical_error.py](./LMCS_statistical_error.py) we provide a simple algorithm for the evaluation of the statistical error in the simulation of the evolution sequences of the three-tanks experiment.
 
 ## Download 
 
