@@ -12,15 +12,17 @@ az0 = 0.75
 az12 = 0.75
 az23 = 0.75
 g = 9.81
-t_step = 0.1 #duration of a tick in seconds
-q_max = 6.0
-q_step = q_max/5.0
+t_step = 0.1   #duration of a tick in seconds
+q_max = 6.0   #maximal flow rate
+q_step = q_max/5.0   #maximal modification to the flow rate
 q_med = q_max/2.0
+
 l_max = 20.0
 l_min = 0.0
 
-l_goal = 10.0
+l_goal = 10.0   #target level in the tanks
 delta_l = 0.5
+
 epsilon = 0.3
 
 q2_dev = 0.5
@@ -47,6 +49,9 @@ def compute_q23(ds):
     l3 = ds['l3']
     return compute_flow_rate(l2, l3, a, az23)
 
+### q1 flow rate through the pump attached to the first tank
+### q2 flow rate through the incoming pipe
+### q3 flow rate through the outlet pump
 
 def Env_scenario1(ds):
     newds = ds.copy()
@@ -179,6 +184,11 @@ PTanks = synch_parallel_process(processes['Pin'], processes['Pout'])
 def init_ds(q1, q2, q3, l1, l2, l3, delta_l):
     return {'q1': q1, 'q2': q2, 'q3': q3, 'l1': l1, 'l2': l2, 'l3': l3, 'delta_l': delta_l}
 
+### Differently from what we wrote in the paper, here you can see delta_l as a variable in the data state.
+### However, notice that neither the environments, nor the processes, ever modify it.
+### Here, we included it as a variable in the data state to allow for a parametric definition of processes
+### (instead of having to define a new process whenever the value of delta_l changes).
+### Hence it is just for sake of code simplification.
 
 
 ### SIMULATIONS
