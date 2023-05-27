@@ -1,6 +1,6 @@
-# SPEBNR: a Simple Python Environment for statistical estimation of Biochemical Network Robustness
+# SPEAR: a Simple Python Environment for statistical estimation of Adaptation and Reliability
 
-SPEBNR is a simple Python tool that permits estimating the distance between two biochemical systems. 
+SPEAR is a simple Python tool that permits estimating the distance between two systems. 
 
 Each system consists of three distinct components: 
   * a *process* describing the behaviour of the program; 
@@ -41,11 +41,10 @@ Run this command in the folder where you want to download the tool.
 
 ## How to run experiments
 
-To run experiments Python3 (>= 3.11) is needed. Moreover, the following Python packages must be available:
-  * [numpy](https://numpy.org) >= 1.23.4
-  * [scipy](https://scipy.org/) >= 1.10.1
-  * [matplotlib](https://matplotlib.org) >= 3.6.2
-  * [statistics](https://github.com/digitalemagine/py-statistics) >= 1.0.3.5
+To run experiments Python3 (>= 3.9) is needed. Moreover, the following Python packages must be available:
+  * [numpy](https://numpy.org) >= 1.18.4
+  * [scipy](https://www.scipy.org) >= 1.4.1
+  * [matplotlib](https://matplotlib.org) >= 3.0.3
   
 To install all the required packages you can just run:
 
@@ -56,5 +55,7 @@ pip install -r requirements.txt
 If all the needed package are installed in your system, you have to execute:
 
 ```
-EnvZOmpR.py
+python temperature.py
+python smart_room.py
+python redblue.py
 ```
