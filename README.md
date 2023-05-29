@@ -3,7 +3,7 @@
 SPEBNR is a simple Python tool that permits estimating the distance between two biochemical systems. 
 
 Each system consists of two distinct components: 
-  * a *process* describing the behaviour of the biochemical system. Essentially, a solution with *n* species is modelled by the parallel composition of n processes, where each process represents one species and its concentration level;
+  * a *process* describing the behaviour of the biochemical system. Essentially, a solution with *n* species is modelled by the parallel composition of *n* processes, where each process represents one species and its concentration level;
   * an *evolution sequence* describing the effect of the evolution over the attainable states.
 
 Two systems are compared via a (pseudo)metric, called the *evolution metric*. Thanks to the possibility of extrapolating process behaviour from that of the system typical of our model, this metric allows us to
@@ -14,7 +14,7 @@ Via the metric we introduce a dependability property of a biochemical system, ca
 
 Robustness is the ability of the program to tolerate internal and external perturbation while preserving the original behaviour. Intuitively, *the more robust the system is, the less the gap between the original and the perturbed behaviour is*.
 
-In [EnvZOmpR.py](./EnvZOmpR.py) createSystem is used to model a simple biochemical system in which the *EnvZ/OmpR Osmoregulatory Signaling System* regulates two proteins in the *Escherichia Coli* bacterium. We use our algorithm to evaluate the differences between the original EnvZ/OmpR system and two other systems which are obtained by perturbing its initial state. Then, we use our algorithm to evaluate the differences between the original EnvZ/OmpR system S and 20 systems which have an input distance in (eta_1-1,eta_1], for five different values for eta_1: 0.3, 0.4, 0.5, 0.6, 0.7.
+In [EnvZOmpR.py](./EnvZOmpR.py) createSystem is used to model a simple biochemical system in which the *EnvZ/OmpR Osmoregulatory Signaling System* regulates two proteins in the *Escherichia Coli* bacterium. We use our algorithm to evaluate the differences between the original EnvZ/OmpR system and two other systems which are obtained by perturbing its initial state. Then, we use our algorithm to evaluate the differences between the original EnvZ/OmpR system *S* and *20* systems which have an input distance in (*eta_1*-1,*eta_1*], for five different values for *eta_1*: 0.3, 0.4, 0.5, 0.6, 0.7.
 
 In [createSystem.py](./createSystem.py) uses SPEBNR to create and model the biochemical system.
 
