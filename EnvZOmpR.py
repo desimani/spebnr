@@ -143,7 +143,7 @@ def get_output_max_level():
 h = 15000
 N = 50
 l = 2
-no_perturbated_systems = 2#0 # 1 <= no_perturbated_systems <= 100
+no_perturbated_systems = 20 # 1 <= no_perturbated_systems <= 100
 
 
 # CHECK ROBUSTNESS
