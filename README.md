@@ -25,7 +25,7 @@ In [spebnr.py](./spebnr.py) is used in order to model the evolution sequence of 
 To download SPEBNR you have just to clone GitHub project:
 
 ```
-git clone https://github.com/desimani/spebnr.git
+git clone https://github.com/dmanicardi/spebnr.git
 ```
 
 Run this command in the folder where you want to download the tool.
