@@ -1,10 +1,11 @@
-# (createSystem.py) last update: 2023.05.22
+# (createSystem.py) last update: 2023.07.03
 
 
 from spebnr import *
 import random
 import os # directories
 import scipy.special as spe # binomial coefficient
+import sys # maximum integer value
 
 
 
@@ -29,10 +30,11 @@ def write( strings, file ):
 """
 SPECIES: list of [species_name, min_level, max_level, roles for each reaction] for each specie
 reactions: all possible reactions (list of reactions and their own rate)
+processes: initial process (already checked)
 It creates the map consisting of all possible processes.
 return: map_processes (the map of all possible processes)
 """
-def create_map( SPECIES, reactions ):
+def create_map( SPECIES, reactions, processes ):
         
     reactions_name = []
     for i in range(0, len(reactions)):
@@ -46,9 +48,25 @@ def create_map( SPECIES, reactions ):
         min_level = s[1]
         max_level = s[2]
         reactions_roles = s[3]
-    
+
+        isEnzyme = True
+        for role in reactions_roles:
+            if role[0] != role[1]:
+                isEnzyme = False
+
+        possible_concentrations = range(min_level, 1+max_level)
+        if isEnzyme:
+            possible_concentrations = set() # concentration levels
+            for process in processes:
+                for species_level in process:
+                    split = species_level.split('_')
+                    len_to_remove = len(split[len(split)-1])+1
+                    if name==species_level[:(len(species_level)-len_to_remove)]:
+                        possible_concentrations.add(int(split[len(split)-1]))
+
         # for each level (min..max), create a process and insert it in the map
-        for i in range(min_level, 1+max_level): # range(a,b): a incluso, b escluso: a <= i < b
+        #for i in range(min_level, 1+max_level): # range(a,b): a incluso, b escluso: a <= i < b
+        for i in possible_concentrations: # range(a,b): a incluso, b escluso: a <= i < b
             process_name = name + '_' + str(i) # process_name = name_level
 
             set_reactions = []
@@ -406,7 +424,7 @@ def write_all_info_in_files_and_plot(h, N, l,
                             dist_i_list, dist_o_list, dist_o_interval,
                             maximum_input_distance, mean_output_distance,
                             listMaxLevelInP, 
-                            rob_string): 
+                            rob_string):
 
     # create directories
     # main directory
@@ -427,7 +445,7 @@ def write_all_info_in_files_and_plot(h, N, l,
             pdir = os.path.join(main_directory,'plots')
             os.mkdir(pdir)
             # concentrations (only if comparing)
-            if len(example) == 1:
+            if len(example) != 1:
                 cdir = os.path.join(main_directory,'concentrations')
                 os.mkdir(cdir)
             sdir = os.path.join(main_directory,'systems')
@@ -536,11 +554,12 @@ def write_all_info_in_files_and_plot(h, N, l,
 
     # plot concentration iff compare original-perturbated
     if len(example) > 1:
+
         # plot output (original)
         xlabel = 'step'
         ylabel = 'concentration'
         title = example[1]
-        path = os.path.join(pdir,title)
+        path = os.path.join(cdir,title)
         plot_concentrations(data0, INPUT_SPECIES, OUTPUT_SPECIES,
                         get_input_level, get_output_level,
                         xlabel, ylabel,
@@ -551,7 +570,7 @@ def write_all_info_in_files_and_plot(h, N, l,
         xlabel = 'step'
         ylabel = 'concentration'
         title = example[2]
-        path = os.path.join(pdir,title)
+        path = os.path.join(cdir,title)
         plot_concentrations(other_datas[0], INPUT_SPECIES, OUTPUT_SPECIES,
                         get_input_level, get_output_level,
                         xlabel, ylabel,
@@ -577,7 +596,7 @@ get_output_level: a function which returns a list of the maximum output concentr
 get_output_max_level: a function which returns a list of the output species name and the maximum output concentration
 eta_1: referred to the input threshold
 example: list of string of the name of example
-It calls generate_some_perturbated_processes to generate () random processes having an input distance in (eta_1-1,eta_1].
+It calls generate_some_perturbated_processes to generate () random processes having an input distance in (eta_1-0.1,eta_1].
     Then, it calls robustness_some_system to calculates the robustness of the original system.
     Finally, it calls write_all_info_in_files_and_plot to print information and generates plots.
 """
@@ -595,13 +614,13 @@ def execute_robustness( SPECIES, r, p, no_perturbated_sys,
         print('InputError!')
         raise Exception("Exception!")
 
-    eta_1 = [eta_1-1, eta_1] #interval eta_1
-    
-    pdef = create_map(SPECIES, r) #r: reactions
+    eta_1 = [round(eta_1-0.1,1), eta_1] #interval eta_1
     
     s = get_species_levels(SPECIES)
     no_min_level, no_max_level = find_min_max_levels(SPECIES)
     other_p = generate_some_perturbated_processes(s, p, no_perturbated_sys, INPUT_SPECIES, rank_input, eta_1)
+    
+    pdef = create_map(SPECIES, r, [p]+other_p) #r: reactions while p: initial process
     
     print_some_info(h, N, l, no_min_level, no_max_level,
                     p, other_p, eta_1, example[0])
@@ -646,7 +665,7 @@ def find_min_max_level_each_species(s, data):
 
     # creates a list with the maximum level for each specie
     max_levels_list = [ 0 for i in s ] 
-    min_levels_list = [ 5000 for i in s ] 
+    min_levels_list = [ sys.maxsize for i in s ]
 
     # find all process in p
     for list_processes in data:
@@ -769,7 +788,7 @@ def compare_two_systems( SPECIES, r, p_original, p_perturbated,
         print('InputError!')
         raise Exception("Exception!")
     
-    pdef = create_map(SPECIES, r) #r: reactions
+    pdef = create_map(SPECIES, r, [p_original, p_perturbated]) #r: reactions
     
     s = get_species_levels(SPECIES)
     no_min_level, no_max_level = find_min_max_levels(SPECIES)
@@ -821,7 +840,7 @@ def find_max_level( SPECIES, r, p, no_perturbated_sys,
                         INPUT_SPECIES, OUTPUT_SPECIES, h, N,
                         get_input_level, get_output_level,
                         rank_input, rank_output, 
-                        example): 
+                        example):
 
     eta_1 = 0.7 # only for debugging
     l = 10 # only for debugging
@@ -833,7 +852,7 @@ def find_max_level( SPECIES, r, p, no_perturbated_sys,
         print('InputError!')
         raise Exception("Exception!")
     
-    pdef = create_map(SPECIES, r) #r: reactions
+    pdef = create_map(SPECIES, r, [p]) #r: reactions
     s = get_species_levels(SPECIES)
     no_min_level, no_max_level = find_min_max_levels(SPECIES)
 
@@ -858,6 +877,9 @@ def find_max_level( SPECIES, r, p, no_perturbated_sys,
             print('\n\n\nThe directory '+str(mdir)+' has been created\n\n\n')
             break
         count += 1
+
+    # write data0 in S.txt
+    write(['p:\n',str(p)], os.path.join(mdir,'p'))
 
     # write the minimum and maximum level of each species in minMaxLevels.txt
     levels_to_write = find_min_max_level_each_species(s, data)

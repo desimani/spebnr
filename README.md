@@ -15,11 +15,15 @@ Via the metric we introduce a dependability property of a biochemical system, ca
 
 Robustness is the ability of the program to tolerate internal and external perturbation while preserving the original behaviour. Intuitively, *the more robust the system is, the less the gap between the original and the perturbed behaviour is*.
 
-In [spebnr.py](./spebnr.py) is used in order to model the evolution sequence of the system and calculate the distance over systems and the distance between system distributions. Then, it is used to calculate the robustness of the biochemical system.
+[spebnr.py](./spebnr.py) is used in order to model the evolution sequence of the system and calculate the distance over systems and the distance between system distributions. Then, it is used to calculate the robustness of the biochemical system.
 
 In [createSystem.py](./createSystem.py) uses SPEBNR to create and model the biochemical system.
 
-In [EnvZOmpR.py](./EnvZOmpR.py) createSystem is used to model a simple biochemical system in which the *EnvZ/OmpR Osmoregulatory Signaling System* regulates two proteins in the *Escherichia Coli* bacterium. We use our algorithm to evaluate the differences between the original EnvZ/OmpR system and two other systems which are obtained by perturbing its initial state. Then, we use our algorithm to evaluate the differences between the original EnvZ/OmpR system *S* and *20* systems which have an input distance in (*eta_1*-1,*eta_1*], for five different values for *eta_1*: 0.3, 0.4, 0.5, 0.6, 0.7.
+In [caseStudies/envZOmpR/envZOmpR.py](./caseStudies/envZOmpR/envZOmpR.py) createSystem is used to model a simple biochemical system in which the *EnvZ/OmpR Osmoregulatory Signaling System* regulates two proteins in the *Escherichia Coli* bacterium. We use our algorithm to evaluate the differences between the original EnvZ/OmpR system and two other systems which are obtained by perturbing its initial state. Then, we use our algorithm to evaluate the differences between the original EnvZ/OmpR system *S* and *20* systems which have an input distance in (*eta_1*-0.1,*eta_1*], for five different values for *eta_1*: 0.3, 0.4, 0.5, 0.6, 0.7.
+
+In [caseStudies/bactChem/bactChem.py](./caseStudies/bactChem/bactChem.py) createSystem is used to model a simple biochemical system in which the *Bacterial Chemotaxis System* in *Escherichia Coli* bacterium. *E. Coli* senses the concentration level of attractant $L$, in order to decide whether to keep moving in the current direction or to make a tumble, thus changing direction randomly. We use our algorithm to evaluate the differences between the original Bacterial Chemotaxis system and two other systems which are obtained by perturbing its initial state -- considering two different input: $L$ and $CheR$. Then, for each input - $L$ and $CheR$ - we use our algorithm to evaluate the differences between the original Bacterial Chemotaxis system *S* and *20* systems which have an input distance in (*eta_1*-0.1,*eta_1*], for five different values for *eta_1*: 0.3, 0.4, 0.5, 0.6, 0.7.
+
+In [caseStudies/enzyme/enzyme.py](./caseStudies/enzyme/enzyme.py) createSystem is used to model a simple biochemical system in which the *Enzyme Activity at Saturation System* where an enzyme *R* produces a molecule *X*. We use our algorithm to evaluate the differences between the original Enzyme system and two other systems which are obtained by perturbing its initial state. Then, we use our algorithm to evaluate the differences between the original Enzyme system *S* and *10* systems which have an input distance in (*eta_1*-0.1,*eta_1*], for five different values for *eta_1*: 0.3, 0.4, 0.5, 0.6, 0.7.
 
 ## Download 
 
@@ -45,7 +49,7 @@ To install all the required packages you can just run:
 pip install -r requirements.txt
 ```
 
-If all the needed package are installed in your system, you have to execute:
+If all the needed packages are installed in your system, you have to add [spebnr.py](./spebnr.py) and [createSystem.py](./createSystem.py) in the directory of the chosen case study. Then, you have to execute the chosen case study e.g.:
 
 ```
 EnvZOmpR.py

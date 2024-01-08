@@ -566,6 +566,7 @@ def plot_some_histograms( datas, legends, xlabel, ylabel, title, file, colors ):
     plt.ylabel(ylabel)
     plt.title(title)
     plt.legend()
+    #plt.ylim(0,100) # ylim((bottom, top))   # set the ylim to bottom, top
     plt.savefig(file+'.png')
     #plt.show()
     plt.close()
